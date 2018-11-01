@@ -4,11 +4,11 @@ Synchronizes the database watched status between two Plex servers. This includes
 ## Usage
 To use the script, you will need to be able to access the databases of both Plex servers from one place. This can be done with programs like `sshfs`. For instance, you could run the script like this:
 ```
-wget https://raw.githubusercontent.com/Fmstrat/plex-db-sync/master/plex-db-sync
+wget https://raw.githubusercontent.com/timekills/plex-db-sync/master/plex-db-sync
 apt-get install sshfs sqlite3
 mkdir -p /mnt/sshfs
 sshfs -o allow_other,IdentityFile=/keys/serverkey -p 22 \
-	root@hostname.tld:"/var/lib/plexmediaserver/Library/Application Support/Plex Media Server/Plug-in Support/Databases/" \
+	root@hostname.tld:"/opt/appdata/plex/database/Library/Application Support/Plex Media Server/Plug-in Support/Databases/" \
 	/mnt/sshfs
 chmod +x plex-db-sync
 ./plex-db-sync \
@@ -22,9 +22,9 @@ chmod +x plex-db-sync
 The script stops and starts Plex Media Server for a very short period of time to make updates. Due to buffering and reconnections, this does not impact clients when playing, except perhaps on the first run when a very large number of records are being updated.
 
 ## Docker
-The following example is for docker-compose. It assumes you are running one Plex server locally, and another remotely.
+The following example is for docker-compose. It assumes you are running one Plex server locally, and another remotely and that you are using the Plexguide.com install.
 ```
-version: '2'
+version: '3'
 
 services:
 
@@ -34,7 +34,7 @@ services:
     volumes:
       - /etc/localtime:/etc/localtime:ro
       - ./plex-db-sync/sshkey:/sshkey
-      - /docker/plex/Library/Application Support/Plex Media Server/Plug-in Support/Databases/:/mnt/DB2
+      - /opt/appdata/plex/database/Library/Application Support/Plex Media Server/Plug-in Support/Databases/:/mnt/DB2
     cap_add:
       - SYS_ADMIN
     devices:
@@ -47,12 +47,12 @@ services:
       - S1_SSH_USER=root
       - S1_SSH_HOST=hostname
       - S1_SSH_PORT=22
-      - S1_SSH_PATH=/docker/plex/Library/Application Support/Plex Media Server/Plug-in Support/Databases
-      - S1_START=ssh -oStrictHostKeyChecking=no -i /sshkey root@hostname 'cd /docker; docker-compose up -d plex'
-      - S1_STOP=ssh -oStrictHostKeyChecking=no -i /sshkey root@hostname 'cd /docker; docker-compose stop plex'
+      - S1_SSH_PATH=/opt/appdata/plex/database/Library/Application Support/Plex Media Server/Plug-in Support/Databases/
+      - S1_START=ssh -oStrictHostKeyChecking=no -i /sshkey root@hostname 'cd /; docker start plex'
+      - S1_STOP=ssh -oStrictHostKeyChecking=no -i /sshkey root@hostname 'cd /; docker stop plex'
       - S2_DB_PATH=/mnt/DB2
-      - S2_START=cd /docker; docker-compose up -d plex
-      - S2_STOP=cd /docker; docker-compose stop plex
+      - S2_START=cd /; docker start plex
+      - S2_STOP=cd /; docker stop plex
     restart: always
 ```
 
