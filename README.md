@@ -7,9 +7,7 @@ To use the script, you will need to be able to access the databases of both Plex
 wget https://raw.githubusercontent.com/timekills/plex-db-sync/master/plex-db-sync
 apt-get install sshfs sqlite3
 mkdir -p /mnt/sshfs
-sshfs -o allow_other,IdentityFile=/keys/serverkey -p 22 \
-	root@hostname.tld:"/opt/appdata/plex/database/Library/Application Support/Plex Media Server/Plug-in Support/Databases/" \
-	/mnt/sshfs
+sshfs -o allow_other,IdentityFile=~/.ssh/id_rsa -p 22 root@hostname.tld:"/opt/appdata/plex/database/Library/Application Support/Plex Media Server/Plug-in Support/Databases/" /mnt/sshfs
 chmod +x plex-db-sync
 ./plex-db-sync \
 	--plex-db-1 "/mnt/sshfs/com.plexapp.plugins.library.db" \
@@ -43,7 +41,7 @@ services:
       - apparmor:unconfined
     environment:
       - CRON=0 4 * * *
-      - S1_SSH_KEY=/sshkey
+      - S1_SSH_KEY=~/.ssh/id_rsa.pub
       - S1_SSH_USER=root
       - S1_SSH_HOST=hostname
       - S1_SSH_PORT=22
