@@ -41,7 +41,7 @@ services:
       - apparmor:unconfined
     environment:
       - CRON=0 4 * * *
-      - S1_SSH_KEY=~/.ssh/id_rsa.pub
+      - S1_SSH_KEY=~/.ssh/id_rsa
       - S1_SSH_USER=root
       - S1_SSH_HOST=hostname
       - S1_SSH_PORT=22
