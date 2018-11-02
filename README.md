@@ -1,5 +1,5 @@
-# plex-db-sync
-Synchronizes the database watched status between two Plex servers. This includes watched times, and works for all users on the system without the need for tokens.
+# plex-db-sync-plexguide
+Synchronizes the database watched status between two Plex servers. This includes watched times, and works for all users on the system without the need for tokens. Modified from original to include locations for Plexguide installation.
 
 ## Usage
 To use the script, you will need to be able to access the databases of both Plex servers from one place. This can be done with programs like `sshfs`. For instance, you could run the script like this:
@@ -9,7 +9,7 @@ apt-get install sshfs sqlite3
 mkdir -p /mnt/sshfs
 sshfs -o allow_other,nonempty root@hostname.tld:"/opt/appdata/plex/database/Library/Application Support/Plex Media Server/Plug-in Support/Databases/" /mnt/sshfs
 chmod +x plex-db-sync
-./plex-db-sync ./plex-db-sync --plex-db-1 "/mnt/sshfs/com.plexapp.plugins.library.db" --plex-start-1 "ssh -oStrictHostKeyChecking=no -i root@TLD docker start plex"  --plex-stop-1 "ssh -oStrictHostKeyChecking=no -i root@TLD docker stop plex" --plex-db-2 "/opt/appdata/plex/database/Library/Application Support/Plex Media Server/Plug-in Support/Databases/com.plexapp.plugins.library.db" --plex-start-2 "docker start plex" --plex-stop-2 "docker stop plex"
+./plex-db-sync ./plex-db-sync --plex-db-1 "/mnt/sshfs/com.plexapp.plugins.library.db" --plex-start-1 "ssh -o StrictHostKeyChecking=no -i root@TLD docker start plex"  --plex-stop-1 "ssh -o StrictHostKeyChecking=no -i root@TLD docker stop plex" --plex-db-2 "/opt/appdata/plex/database/Library/Application Support/Plex Media Server/Plug-in Support/Databases/com.plexapp.plugins.library.db" --plex-start-2 "docker start plex" --plex-stop-2 "docker stop plex"
 ```
 The script stops and starts Plex Media Server for a very short period of time to make updates. Due to buffering and reconnections, this does not impact clients when playing, except perhaps on the first run when a very large number of records are being updated.
 
