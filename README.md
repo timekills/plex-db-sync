@@ -8,8 +8,8 @@ wget https://github.com/timekills/plex-db-sync-plexguide/blob/master/plex-db-syn
 apt install sshfs sqlite3
 mkdir -p /mnt/sshfs
 sshfs -o allow_other,nonempty root@hostname.tld:"/opt/appdata/plex/database/Library/Application Support/Plex Media Server/Plug-in Support/Databases" /mnt/sshfs
-chmod +x plex-db-sync
-./plex-db-sync \
+chmod +x plex-db-sync-plexguide
+./plex-db-sync-plexguide \
 	--plex-db-1 "/mnt/sshfs/com.plexapp.plugins.library.db" \
 	--plex-start-1 "ssh -o StrictHostKeyChecking=no -i root@TLD docker start plex" \
 	--plex-stop-1 "ssh -o StrictHostKeyChecking=no -i root@TLD docker stop plex" \
