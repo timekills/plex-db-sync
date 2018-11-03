@@ -39,10 +39,10 @@ services:
       - S1_SSH_USER=root
       - S1_SSH_HOST=hostname
       - S1_SSH_PORT=22
-      - S1_SSH_PATH=/opt/appdata/plex/database/Library/Application Support/Plex Media Server/Plug-in Support/Databases/
+      - S1_DB_PATH==/config/Library/Application Support/Plex Media Server/Plug-in Support/Databases
       - S1_START=ssh -oStrictHostKeyChecking=no -i /sshkey root@hostname 'cd /; docker start plex'
       - S1_STOP=ssh -oStrictHostKeyChecking=no -i /sshkey root@hostname 'cd /; docker stop plex'
-      - S2_DB_PATH=/mnt/DB2
+      - S2_DB_PATH=/config/Library/Application Support/Plex Media Server/Plug-in Support/Databases/
       - S2_START=cd /; docker start plex
       - S2_STOP=cd /; docker stop plex
     restart: always
@@ -55,13 +55,14 @@ Command Line | Docker Variable | Description
 `--backup <true/false>` | `BACKUP` | Create a backup of the DB before running any SQL.
 `--debug <true/false>` | `DEBUG` | Print debug output.
 `--dry-run <true/false>` | `DRYRUN` | Don't apply changes to the DB.
-`--plex-db-(1/2)` | `S(1/2)_DB_PATH` | Location of the server's DB. For the script, this is the file itself, for docker, it is the path.
-`--plex-start-(1/2)` | `S(1/2)_START` | The command to start the Plex server.
-`--plex-stop-(1/2)` | `S(1/2)_STOP` | The command to stop the Plex server.
+`--plex-db-(1/2)` | `S(1/2)_DB_PATH` | Location of the server's DB. Pre-set above for Plexguide Docker, so shouldn't need to use this variable.
+`--plex-start-(1/2)` | `S(1/2)_START` | The command to start the Plex server. Pre-set for Plexguide Docker, so shouldn't need to use this variable.
+`--plex-stop-(1/2)` | `S(1/2)_STOP` | The command to stop the Plex server. Pre-set above for Plexguide Docker, so shouldn't need to use this variable.
 n/a | `CRON` | A string that defines when the script should run in crond (Default is 4AM).
 n/a | `INITIALRUN` | Run at start prior to starting cron.
-n/a | `S(1/2)_SSH_KEY` | The SSH identity file.
-n/a | `S(1/2)_SSH_USER` | The SSH user.
-n/a | `S(1/2)_SSH_HOST` | The SSH host.
+n/a | `S(1/2)_SSH_KEY` | The SSH identity file. Assumes you've already created and shared the SSH files between the servers and they're stored in the default path. If so, then leave the as above.
+n/a | `S(1/2)_SSH_USER` | The SSH user. You'll have to change this.
+n/a | `S(1/2)_SSH_HOST` | The SSH host. You'll have to change this.
 n/a | `S(1/2)_SSH_PORT` | The SSH port.
-n/a | `S(1/2)_SSH_PATH` | Path to the database file on the SSH server.
+n/a | `S1_DB_PATH` | Path to the database file on the server you're SSH'ing into and copying the database to (the host's /opt/appdata/plex/database directory is already mounted to /config inside the Plex Docker container.)
+n/a | `S2_DB_PATH` | Path to the database file on the server you're running the command from and copying the database from.
