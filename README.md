@@ -1,7 +1,7 @@
 # plex-db-sync-plexguide
 Synchronizes the database watched status between two Plex servers. This includes watched times, and works for all users on the system without the need for tokens. Modified from original to include locations for Plexguide installation.
 
-## Usage
+## Script version (stand-alone/not Docker install)
 To use the script, you will need to be able to access the databases of both Plex servers from one place. This can be done with programs like `sshfs`. For instance, you could run the script like this:
 ```
 wget https://raw.githubusercontent.com/timekills/plex-db-sync/master/plex-db-sync
