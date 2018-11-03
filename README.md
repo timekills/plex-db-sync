@@ -16,13 +16,13 @@ The script stops and starts Plex Media Server for a very short period of time to
 ## Docker
 The following example is for docker-compose. It assumes you are running one Plex server locally, and another remotely and that you are using the Plexguide.com install.
 ```
-version: '3'
+version: '4'
 
 services:
 
   plex-db-sync:
-    image: nowsci/plex-db-sync
-    container_name: plex-db-sync
+    image: timekills/plex-db-sync-plexguide
+    container_name: plex-db-sync-plexguide
     volumes:
       - /etc/localtime:/etc/localtime:ro
       - ./plex-db-sync/sshkey:/sshkey
